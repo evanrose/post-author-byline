@@ -1,14 +1,25 @@
 <?php
+/*
+Plugin Name: JSON Import
+Plugin URI: https://github.com/evanrose/json-importer
+Description: This is a wordpress plugin that downloads a JSON feed from Reddit and inserts its posts into the wp_posts table.
+Author: Evan Rose
+Author URI: http://evanrose.com
+Version: 1.1
+*/
  
 /*
 Plugin Name: Post Author Byline
-Plugin URI: 
-Description: Adds an author_id to an author_byline_id in the post_meta field
+Plugin URI: https://github.com/evanrose/post_author_byline
+Description: Adds an author_id to an author_byline_id in the post_meta field, could be extended to add lots of metadata
 Author: Evan Rose 
+Author URI: http://evanrose.com
 Version: 1.0
+
 */
 
-function wser_save_author_byline_meta($post_id, $post) {
+//Insert the chosen author ID into the post_meta table on saving or updating the post
+function er_save_author_byline_meta($post_id, $post) {
     
     if ( !wp_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) )) {       
         return $post->ID;
@@ -27,21 +38,23 @@ function wser_save_author_byline_meta($post_id, $post) {
         add_post_meta( $post->ID, '_author_byline_id', $author_byline_id );
     }
 }
-add_action('save_post', 'wser_save_author_byline_meta', 1, 2);
+add_action('save_post', 'er_save_author_byline_meta', 1, 2);
 
 
-function wser_author_byline_box() {
+//Add Choose Author meta box to wp-admin
+function er_author_byline_box() {
     
-    add_meta_box( 'author-byline-div', __('Byline'), 'ca_meta_callback', 'post', 'normal', 'high' );
+    add_meta_box( 'author-byline-div', __( 'Byline' ), 'ca_meta_callback', 'post', 'normal', 'high' );
 }
-add_action( 'add_meta_boxes', 'wser_author_byline_box' );
+add_action( 'add_meta_boxes', 'er_author_byline_box' );
 
-
+//Fetch the author whose ID has been chosen as the byline author for the metabox
 function ca_meta_callback( $post ) {
 
     global $user_ID;
 
     $author_byline_id = get_post_meta( $post->ID, '_author_byline_id', true );
+    
     if ( empty( $author_byline_id ) ) {
         $author_byline_id = $user_ID;
     }
