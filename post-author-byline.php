@@ -1,31 +1,21 @@
 <?php
 /*
-Plugin Name: JSON Import
-Plugin URI: https://github.com/evanrose/json-importer
-Description: This is a wordpress plugin that downloads a JSON feed from Reddit and inserts its posts into the wp_posts table.
-Author: Evan Rose
-Author URI: http://evanrose.com
-Version: 1.1
-*/
- 
-/*
 Plugin Name: Post Author Byline
 Plugin URI: https://github.com/evanrose/post_author_byline
 Description: Adds an author_id to an author_byline_id in the post_meta field, could be extended to add lots of metadata
 Author: Evan Rose 
 Author URI: http://evanrose.com
 Version: 1.0
-
 */
 
 //Insert the chosen author ID into the post_meta table on saving or updating the post
 function er_save_author_byline_meta($post_id, $post) {
     
-    if ( !wp_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) )) {       
+    if ( !w p_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) ) ) {       
         return $post->ID;
     }
 
-    if ( !current_user_can( 'edit_post', $post->ID )) {
+    if ( ! current_user_can( 'edit_post', $post->ID ) ) {
         return $post->ID;
     }
     
