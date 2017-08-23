@@ -11,7 +11,7 @@ Version: 1.0
 //Insert the chosen author ID into the post_meta table on saving or updating the post
 function er_save_author_byline_meta($post_id, $post) {
     
-    if ( !w p_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) ) ) {       
+    if ( !wp_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) ) ) {       
         return $post->ID;
     }
 
