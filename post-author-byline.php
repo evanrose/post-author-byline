@@ -11,7 +11,7 @@ Version: 1.0
 //Insert the chosen author ID into the post_meta table on saving or updating the post
 function er_save_author_byline_meta($post_id, $post) {
     
-    if ( !wp_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) ) ) {       
+    if ( ! wp_verify_nonce( $_POST['author_byline_meta_noncename'], plugin_basename(__FILE__) ) ) {       
         return $post->ID;
     }
 
@@ -34,12 +34,12 @@ add_action('save_post', 'er_save_author_byline_meta', 1, 2);
 //Add Choose Author meta box to wp-admin
 function er_author_byline_box() {
     
-    add_meta_box( 'author-byline-div', __( 'Byline' ), 'ca_meta_callback', 'post', 'normal', 'high' );
+    add_meta_box( 'author-byline-div', __( 'Byline' ), 'er_meta_callback', 'post', 'normal', 'high' );
 }
 add_action( 'add_meta_boxes', 'er_author_byline_box' );
 
 //Fetch the author whose ID has been chosen as the byline author for the metabox
-function ca_meta_callback( $post ) {
+function er_meta_callback( $post ) {
 
     global $user_ID;
 
